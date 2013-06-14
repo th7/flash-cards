@@ -27,31 +27,29 @@ require_relative 'flashcards_model'
 class FlashcardController
 
   def initialize
-    @deck = FlashcardModel.new.current_deck
+    @deck = Game.new.current_deck
     start
   end
 
   def start
     puts "Welcome to Ruby Flash Cards. To play, just enter the correct term for each definition.  Ready?  Go!"
-    main_menu
-  end
-
-  def main_menu
     loop do
-      puts "What would you like to do?"
-      puts "1-Begin Game, 2-Shuffle, 3-Exit"
-      input = gets.chomp
-      case input
-      when '1'
+      show_main_menu
+      user_choice = gets.chomp
+      if user_choice == '1'
         begin_game
-      when '2'
+      elsif user_choice == '2'
         @deck.shuffle!
-      when '3'
-        exit
-      when 'exit'
+      elsif user_choice == '3'
+        goodbye_message
         exit
       end
     end
+  end
+
+  def show_main_menu
+    puts "What would you like to do?"
+    puts "1-Begin Game, 2-Shuffle, 3-Exit"
   end
 
   def begin_game
