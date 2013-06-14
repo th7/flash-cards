@@ -27,7 +27,7 @@ require_relative 'flashcards_model'
 class FlashcardController
 
   def initialize
-    @deck = FlashcardModel.new
+    @deck = FlashcardModel.new.current_deck
     start
   end
 
@@ -56,7 +56,7 @@ class FlashcardController
 
   def begin_game
     puts "Answer 'exit' to exit game."
-    while ask_question(@deck.next_question); end
+    while ask_question(@deck.next_question!); end
   end
 
   def ask_question(question)

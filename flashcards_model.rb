@@ -6,16 +6,27 @@ class FlashcardModel
   def initialize
     sorting_queue = []
     @current_deck = Deck.new
-    File.open("flashcard_samples.txt").each_line do |line|
+    fill_sorting_queue!("flashcard_samples.txt", sorting_queue)
+    delete_blanks!(sorting_queue)
+    create_cards(sorting_queue)
+  end
+  
+  def fill_sorting_queue!(filename, sorting_queue)
+    File.open(filename).each_line do |line|
       sorting_queue << line
     end
-    sorting_queue.delete_if{ |cell| cell == " \n" }
+  end
+  def create_cards(sorting_queue)
     until sorting_queue.count == 0
       card = sorting_queue.shift(2)
       @current_deck.take_in(Flashcard.new(card))  
     end
   end
-  
+
+  def delete_blanks!(sorting_queue)
+    sorting_queue.delete_if{ |cell| cell == " \n" }
+  end
+
   def print_deck
     puts @current_deck
   end
@@ -43,14 +54,15 @@ class Deck
   def next_question!
     card = deck.shift
     deck << card
+    card.question
   end
   
   def correct?(answer)
-    answer == @deck.first.answer
+    answer == @deck.last.answer
   end
   
   def get_answer
-    @deck.first.answer 
+    @deck.last.answer 
   end
 
 end
@@ -69,7 +81,7 @@ class Flashcard
   end
 end
 
-bob = FlashcardModel.new
+# bob = FlashcardModel.new
 
 # bob.current_deck.to_s
 # bob.current_deck.next_question!
