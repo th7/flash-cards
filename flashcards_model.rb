@@ -4,7 +4,7 @@ class Game
   attr_reader :deck_names
   
   def initialize
-    @deck_names = ["flashcard_samples.txt", "tristans_deck.txt", "karsts_deck.txt,", "tylers_deck.txt", "pats_deck.txt"]
+    @deck_names = ["flashcard_samples.txt", "tristans_deck.txt", "karsts_deck.txt", "tylers_deck.txt", "pats_deck.txt"]
   end
 
   def current_deck(index)
@@ -13,15 +13,15 @@ class Game
 
   def fill_deck_from_file(filename)
     raw_flashcards = text_from_file(filename)
-    create_cards_from(raw_flashcards)
+    create_cards_from(filename, raw_flashcards)
   end
 
   def text_from_file(filename)
     File.readlines(filename).reject { |line| line.strip.empty? }
   end
   
-  def create_cards_from(raw_flashcards)
-    deck = Deck.new
+  def create_cards_from(filename, raw_flashcards)
+    deck = Deck.new(filename)
     raw_flashcards.each_slice(2) do |card|
       deck.take_in(Flashcard.new(card))
     end
@@ -34,9 +34,11 @@ class Game
 end
 
 class Deck
-  
-  def initialize
+  attr_reader :filename
+
+  def initialize(filename)
     @deck = []
+    @filename = filename
   end
 
   def take_in(card)
@@ -49,11 +51,22 @@ class Deck
   
   def next_question!
     advance_card!
-    this_card.question
+    this_card.question if this_card
   end
   
   def correct?(answer)
-    answer == this_card.answer
+    if answer == this_card.answer
+      if this_card.retry
+        this_card.retry = false
+        return true
+      else
+        @deck.pop
+        return true
+      end
+    else
+      this_card.retry = true
+      return false
+    end
   end
   
   def get_answer
@@ -76,11 +89,13 @@ class Deck
 end
 
 class Flashcard
+  attr_accessor :retry
   attr_reader :answer, :question  
   
   def initialize(card)
     @question = card[0].chomp#gsub("\n", "")
     @answer = card[1].chomp
+    @retry = false
   end
 
   def to_s

@@ -53,6 +53,7 @@ class FlashcardController
   end
 
   def show_main_menu
+    puts "Current deck: #{@deck.filename}"
     puts "What would you like to do?"
     puts "1-Begin Game, 2-Shuffle, 3-Select Deck, 4-Exit"
   end
@@ -61,7 +62,7 @@ class FlashcardController
     counter = 1
     puts "Please select a deck."
     @game.deck_names.each do |name|
-      puts "#{counter} - name"
+      puts "#{counter} - #{name}"
       counter += 1
     end
   end
@@ -72,6 +73,11 @@ class FlashcardController
   end
 
   def ask_question(question)
+    unless question
+      puts 'Deck complete!'
+      return false
+    end
+    
     tries = 0
 
     loop do 
