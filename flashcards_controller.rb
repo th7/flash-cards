@@ -81,15 +81,11 @@ class FlashcardController
     if tries > 2
       puts "Incorrect. View answer? y/n"
       input = gets.chomp
-      if input == "n"
-        return true
-      else
+      if input == "y"
         puts "The correct answer is: #{@deck.get_answer(question)}"
-        return false
       end
     else
       puts "Incorrect. Guess again."
-      true
     end
   end
 
