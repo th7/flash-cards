@@ -1,52 +1,31 @@
 #require_relative 'flashcard_controller'
 
 class Game
-  attr_accessor :current_deck
+  attr_reader :deck_names
   
   def initialize
-    @current_deck = Deck.new
-    fill_deck_from_file("flashcard_samples.txt")
+    @deck_names = ["flashcard_samples.txt", "tristans_deck.txt", "karsts_deck.txt,", "tylers_deck.txt", "pats_deck.txt"]
+  end
+
+  def current_deck(index)
+    fill_deck_from_file(@deck_names[index])
   end
 
   def fill_deck_from_file(filename)
-    # sorting_queue = []
-    # fill_sorting_queue!(filename, sorting_queue)
-    # delete_blanks!(sorting_queue)
-    # create_cards(sorting_queue)
-
     raw_flashcards = text_from_file(filename)
-    # remove_blanks_from(raw_flashcards)
     create_cards_from(raw_flashcards)
-
-    # temporary_store.fill!(filename)
-    # temporary_store.delete_blanks!
-    # create_cards_from(temporary_store)
-    
   end
 
   def text_from_file(filename)
     File.readlines(filename).reject { |line| line.strip.empty? }
   end
   
-  # def fill_sorting_queue!(filename, sorting_queue)
-  #   File.open(filename).each_line do |line|
-  #     sorting_queue << line
-  #   end
-  # end
-
-  # def delete_blanks!(sorting_queue)
-  #   sorting_queue.delete_if{ |cell| cell == " \n" }
-  # end
-
   def create_cards_from(raw_flashcards)
+    deck = Deck.new
     raw_flashcards.each_slice(2) do |card|
-      @current_deck.take_in(Flashcard.new(card))
+      deck.take_in(Flashcard.new(card))
     end
-
-    # until sorting_queue.count == 0
-    #   card = sorting_queue.shift(2)
-    #   @current_deck.take_in(Flashcard.new(card))
-    # end
+    deck
   end
 
   def print_deck
@@ -55,7 +34,6 @@ class Game
 end
 
 class Deck
-  # attr_accessor :deck
   
   def initialize
     @deck = []
@@ -64,10 +42,6 @@ class Deck
   def take_in(card)
     deck << card
   end
-
-  # def to_s
-  #   puts @deck
-  # end
 
   def shuffle!
     deck.shuffle!
@@ -120,3 +94,39 @@ end
 # bob.current_deck.to_s
 # bob.current_deck.next_question!
 #print bob.current_deck.get_answer
+
+
+
+
+
+
+
+
+
+class DeadCode
+# DEAD CODE
+    # sorting_queue = []
+    # fill_sorting_queue!(filename, sorting_queue)
+    # delete_blanks!(sorting_queue)
+    # create_cards(sorting_queue)
+    # remove_blanks_from(raw_flashcards)
+    # temporary_store.fill!(filename)
+    # temporary_store.delete_blanks!
+    # create_cards_from(temporary_store)
+  # def fill_sorting_queue!(filename, sorting_queue)
+  #   File.open(filename).each_line do |line|
+  #     sorting_queue << line
+  #   end
+  # end
+  # def delete_blanks!(sorting_queue)
+  #   sorting_queue.delete_if{ |cell| cell == " \n" }
+  # end
+    # until sorting_queue.count == 0
+    #   card = sorting_queue.shift(2)
+    #   @current_deck.take_in(Flashcard.new(card))
+    # end
+  # attr_accessor :deck
+  # def to_s
+  #   puts @deck
+  # end
+end
