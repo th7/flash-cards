@@ -27,7 +27,8 @@ require_relative 'flashcards_model'
 class FlashcardController
 
   def initialize
-    @deck = Game.new.current_deck
+    @game = Game.new
+    @deck = @game.current_deck(0)
     start
   end
 
@@ -41,6 +42,10 @@ class FlashcardController
       elsif user_choice == '2'
         @deck.shuffle!
       elsif user_choice == '3'
+        show_decks
+        index = gets.chomp.to_i-1
+        @deck = @game.current_deck(index)
+      elsif user_choice == '4'
         goodbye_message
         exit
       end
@@ -49,7 +54,16 @@ class FlashcardController
 
   def show_main_menu
     puts "What would you like to do?"
-    puts "1-Begin Game, 2-Shuffle, 3-Exit"
+    puts "1-Begin Game, 2-Shuffle, 3-Select Deck, 4-Exit"
+  end
+
+  def show_decks
+    counter = 1
+    puts "Please select a deck."
+    @game.deck_names.each do |name|
+      puts "#{counter} - name"
+      counter += 1
+    end
   end
 
   def begin_game
