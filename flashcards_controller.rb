@@ -65,7 +65,7 @@ class FlashcardController
     loop do 
       puts question
       guess = gets.chomp
-      if @deck.correct?(question, guess)
+      if @deck.correct?(guess)
         puts "Correct!"
         return true
       elsif guess.downcase == "exit"
