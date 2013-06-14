@@ -1,26 +1,26 @@
 require_relative 'flashcards_model'
 
-class FlashcardModel
+# class FlashcardModel
 
-  def initialize
-  end
+#   def initialize
+#   end
 
-  def correct?(question, guess)
-    guess == "2"
-  end
+#   def correct?(question, guess)
+#     guess == "2"
+#   end
 
-  def next_question
-    "What's 1+1?"
-  end
+#   def next_question
+#     "What's 1+1?"
+#   end
 
-  def get_answer(question)
-    "2"
-  end
+#   def get_answer(question)
+#     "2"
+#   end
 
-  def shuffle!
-  end
+#   def shuffle!
+#   end
 
-end
+# end
 
 
 
