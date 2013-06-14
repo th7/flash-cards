@@ -82,7 +82,7 @@ class FlashcardController
       puts "Incorrect. View answer? y/n"
       input = gets.chomp
       if input == "y"
-        puts "The correct answer is: #{@deck.get_answer(question)}"
+        puts "The correct answer is: #{@deck.get_answer}"
       end
     else
       puts "Incorrect. Guess again."
